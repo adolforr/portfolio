@@ -16,7 +16,7 @@ public class PersonalInfo {
     private String ProfileImageUrl;
     private Integer yearsOfExperience;
     private String email;
-    private String phone;
+    private String phoneNumber;
     private String linkedInUrl;
     private String githubUrl;
 
