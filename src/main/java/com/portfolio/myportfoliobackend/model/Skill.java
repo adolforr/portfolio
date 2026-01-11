@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Skill {
     private Long id;
     private String skillName;
-    private Integer skillLevelPorcentage;
+    private Integer skillLevelPercentage;
     private String iconClass;
     private String personalInfoId;
 }

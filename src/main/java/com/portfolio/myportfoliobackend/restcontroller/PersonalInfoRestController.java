@@ -4,10 +4,8 @@ import com.portfolio.myportfoliobackend.model.PersonalInfo;
 import com.portfolio.myportfoliobackend.service.IPersonalInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -34,6 +32,12 @@ public class PersonalInfoRestController {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "personal info not found for id: " + id);
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<PersonalInfo> createPersonalInfo(@RequestBody PersonalInfo personalInfo){
+        PersonalInfo newPersonalInfo = personalInfoService.save(personalInfo);
+        return new ResponseEntity<>(newPersonalInfo, HttpStatus.CREATED);
     }
 
 
