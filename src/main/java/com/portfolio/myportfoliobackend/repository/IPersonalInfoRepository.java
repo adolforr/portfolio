@@ -1,6 +1,6 @@
-package com.portfolio.myportfoliobackend.repository;
+package com.portfolio.my_portfolio_backend.repository;
 
-import com.portfolio.myportfoliobackend.model.PersonalInfo;
+import com.portfolio.my_portfolio_backend.model.PersonalInfo;
 
 import java.util.List;
 import java.util.Optional;

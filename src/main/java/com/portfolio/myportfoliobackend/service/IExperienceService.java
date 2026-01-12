@@ -1,6 +1,6 @@
-package com.portfolio.myportfoliobackend.service;
+package com.portfolio.my_portfolio_backend.service;
 
-import com.portfolio.myportfoliobackend.model.Experience;
+import com.portfolio.my_portfolio_backend.model.Experience;
 
 import java.util.List;
 import java.util.Optional;

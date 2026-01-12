@@ -1,17 +1,17 @@
-package com.portfolio.myportfoliobackend.model;
+package com.portfolio.my_portfolio_backend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Project {
     private Long id;
-    private String projectName;
-    private String projectDescription;
-    private String projectImageUrl;
-    private String projectUrl;
-    private String personalInfoId;
+    private String title;
+    private String description;
+    private String imageUrl; // URL o ruta a la imagen del proyecto
+    private String projectUrl; // URL al proyecto desplegado (si existe) o GitHub
+    private Long personalInfoId; // Clave foránea a PersonalInfo
 }

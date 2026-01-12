@@ -1,21 +1,24 @@
-package com.portfolio.myportfoliobackend.repository;
+package com.portfolio.my_portfolio_backend.repository;
 
-import com.portfolio.myportfoliobackend.model.Experience;
+import com.portfolio.my_portfolio_backend.model.Education;
+import com.portfolio.my_portfolio_backend.model.Experience;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class ExperienceRepositoryImpl implements IExperienceRepository{
-
     private final JdbcTemplate jdbcTemplate;
 
     private final RowMapper<Experience> experienceRowMapper = (rs, rowNum) -> {
@@ -32,16 +35,17 @@ public class ExperienceRepositoryImpl implements IExperienceRepository{
 
     @Override
     public List<Experience> findAll() {
-        String sql = "select * from experience order by id";
+        String sql = "SELECT id, job_title, company_name, start_date, end_date, description, personal_info_id FROM experiences";
         return jdbcTemplate.query(sql, experienceRowMapper);
     }
 
     @Override
     public Optional<Experience> findById(Long id) {
-        String sql = "select * from experience where id = ?";
-        try{
+        String sql = "SELECT id, job_title, company_name, start_date, end_date, description, " +
+                "personal_info_id FROM experiences WHERE id = ?";
+        try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, experienceRowMapper, id));
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -49,10 +53,14 @@ public class ExperienceRepositoryImpl implements IExperienceRepository{
     @Override
     public Experience save(Experience experience) {
         if (experience.getId() == null) {
-            String sql = "INSERT INTO experience (job_title, company_name, start_date, end_date, description, personal_info_id) VALUES (?, ?, ?, ?, ?, ?)";
+            // INSERT
+            String sql = "INSERT INTO experiences (job_title, company_name, start_date, end_date, description, " +
+                    "personal_info_id) VALUES (?, ?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
+
             jdbcTemplate.update(connection -> {
-                var ps = connection.prepareStatement(sql, new String[]{"id"});
+                PreparedStatement ps = connection.prepareStatement(sql,
+                        new String[]{"id"});
                 ps.setString(1, experience.getJobTitle());
                 ps.setString(2, experience.getCompanyName());
                 ps.setObject(3, experience.getStartDate());
@@ -61,24 +69,34 @@ public class ExperienceRepositoryImpl implements IExperienceRepository{
                 ps.setLong(6, experience.getPersonalInfoId());
                 return ps;
             }, keyHolder);
-            experience.setId(keyHolder.getKey().longValue());
+
+            experience.setId(Objects.requireNonNull(keyHolder.getKey()).longValue());
         } else {
-            String sql = "UPDATE experience SET job_title = ?, company_name = ?, start_date = ?, end_date = ?, description = ?, personal_info_id = ? WHERE id = ?";
-            jdbcTemplate.update(sql, experience.getJobTitle(), experience.getCompanyName(), experience.getStartDate(), experience.getEndDate(), experience.getDescription(), experience.getPersonalInfoId(), experience.getId());
+            // UPDATE
+            String sql = "UPDATE experiences SET job_title = ?, company_name = ?, start_date = ?, end_date = ?, " +
+                    "description = ?, personal_info_id = ? WHERE id = ?";
+            jdbcTemplate.update(sql,
+                    experience.getJobTitle(),
+                    experience.getCompanyName(),
+                    experience.getStartDate(),
+                    experience.getEndDate(),
+                    experience.getDescription(),
+                    experience.getPersonalInfoId(),
+                    experience.getId());
         }
         return experience;
     }
 
     @Override
     public void deleteById(Long id) {
-        String sql = "DELETE FROM experience WHERE id = ?";
+        String sql = "DELETE FROM experiences WHERE id = ?";
         jdbcTemplate.update(sql, id);
-
     }
 
     @Override
     public List<Experience> findByPersonalInfoId(Long personalInfoId) {
-        String sql = "select * from experience where personal_info_id = ?";
+        String sql = "SELECT id, job_title, company_name, start_date, end_date, " +
+                "description, personal_info_id FROM experiences WHERE personal_info_id = ?";
         return jdbcTemplate.query(sql, experienceRowMapper, personalInfoId);
     }
 }

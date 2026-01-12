@@ -1,7 +1,6 @@
-package com.portfolio.myportfoliobackend.repository;
+package com.portfolio.my_portfolio_backend.repository;
 
-import com.portfolio.myportfoliobackend.model.PersonalInfo;
-import com.portfolio.myportfoliobackend.model.Skill;
+import com.portfolio.my_portfolio_backend.model.Skill;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,5 +10,5 @@ public interface ISkillRepository {
     Optional<Skill> findById(Long id);
     List<Skill> findAll();
     void deleteById(Long id);
-    List<Skill> findAllByPersonalInfoId(Long personalInfoId);
+    List<Skill> findByPersonalInfoId(Long personalInfoId);
 }

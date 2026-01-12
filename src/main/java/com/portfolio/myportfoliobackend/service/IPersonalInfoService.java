@@ -1,6 +1,7 @@
-package com.portfolio.myportfoliobackend.service;
+package com.portfolio.my_portfolio_backend.service;
 
-import com.portfolio.myportfoliobackend.model.PersonalInfo;
+import com.portfolio.my_portfolio_backend.model.PersonalInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
