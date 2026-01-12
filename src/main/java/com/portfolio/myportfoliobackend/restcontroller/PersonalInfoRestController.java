@@ -40,5 +40,21 @@ public class PersonalInfoRestController {
         return new ResponseEntity<>(newPersonalInfo, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public PersonalInfo updatePersonalInfo(@PathVariable Integer id, @RequestBody PersonalInfo personalInfo){
+        Optional<PersonalInfo> existingPersonalInfo = personalInfoService.findById(Long.valueOf(id));
+        if(existingPersonalInfo.isPresent()){
+            personalInfo.setId(Long.valueOf(id));
+            return personalInfoService.save(personalInfo);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "personal info not found for id: " + id);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePersonalInfo(@PathVariable Integer id){
+        personalInfoService.deleteById(Long.valueOf(id));
+    }
+
 
 }
